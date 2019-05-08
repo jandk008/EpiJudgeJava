@@ -4,8 +4,11 @@ import epi.test_framework.EpiTestComparator;
 import epi.test_framework.EpiTestExpectedType;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiPredicate;
 public class RemoveDuplicates {
   @EpiUserType(ctorParams = {String.class, String.class})
@@ -46,8 +49,16 @@ public class RemoveDuplicates {
     }
   }
   public static void eliminateDuplicate(List<Name> names) {
-    // TODO - you fill in here.
-    return;
+    Set<String> set = new HashSet<>();
+    List<Name> indicesToRemove = new ArrayList<>();
+    for (int i = 0; i < names.size(); i++) {
+      Name name = names.get(i);
+      if (set.contains(name.firstName)) {
+        indicesToRemove.add(name);
+      } else
+        set.add(name.firstName);
+    }
+    indicesToRemove.forEach(names::remove);
   }
   @EpiTest(testDataFile = "remove_duplicates.tsv")
   public static List<Name> eliminateDuplicateWrapper(List<Name> names) {

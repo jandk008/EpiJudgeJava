@@ -4,8 +4,7 @@ import epi.test_framework.GenericTest;
 import java.util.Collections;
 import java.util.List;
 public class ApplyPermutation {
-  public static void applyPermutation(List<Integer> perm, List<Integer> A) {
-    // TODO - you fill in here.
+  private static void applyPermutation(List<Integer> perm, List<Integer> A) {
     for (int i = 0; i < A.size(); i++) {
       int index = i;
       while (perm.get(index) >= 0) {
