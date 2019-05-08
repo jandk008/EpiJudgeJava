@@ -42,8 +42,19 @@ public class IntervalAdd {
 
   public static List<Interval> addInterval(List<Interval> disjointIntervals,
                                            Interval newInterval) {
-    // TODO - you fill in here.
-    return null;
+    List<Interval> res = new ArrayList<>();
+    for (Interval interval : disjointIntervals) {
+      if (interval.right < newInterval.left) {
+        res.add(interval);
+      } else if (interval.left > newInterval.right){
+        res.add(newInterval);
+        newInterval = interval;
+      } else {
+        newInterval = new Interval(Math.min(newInterval.left, interval.left), Math.max(newInterval.right, interval.right));
+      }
+    }
+    res.add(newInterval);
+    return res;
   }
 
   public static void main(String[] args) {
