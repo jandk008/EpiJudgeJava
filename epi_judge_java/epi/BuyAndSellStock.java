@@ -6,7 +6,13 @@ public class BuyAndSellStock {
   @EpiTest(testDataFile = "buy_and_sell_stock.tsv")
   public static double computeMaxProfit(List<Double> prices) {
     // TODO - you fill in here.
-    return 0.0;
+    double maxProfit = 0.0;
+    double minPrice = Double.MAX_VALUE;
+    for (final Double price : prices) {
+      maxProfit = Math.max(maxProfit, price - minPrice);
+      minPrice = Math.min(minPrice, price);
+    }
+    return maxProfit;
   }
 
   public static void main(String[] args) {

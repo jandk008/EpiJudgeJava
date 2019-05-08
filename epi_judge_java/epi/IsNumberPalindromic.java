@@ -5,7 +5,14 @@ public class IsNumberPalindromic {
   @EpiTest(testDataFile = "is_number_palindromic.tsv")
   public static boolean isPalindromeNumber(int x) {
     // TODO - you fill in here.
-    return true;
+    long res = 0;
+    int temp = x;
+    while (temp != 0) {
+      res += temp % 10;
+      res *= 10;
+      temp /= 10;
+    }
+    return x >= 0 && (res/10) == x;
   }
 
   public static void main(String[] args) {

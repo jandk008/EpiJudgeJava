@@ -1,4 +1,5 @@
 package epi;
+import epi.IntervalAdd.Interval;
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
@@ -46,7 +47,16 @@ public class SearchForMinMaxInArray {
 
   public static MinMax findMinMax(List<Integer> A) {
     // TODO - you fill in here.
-    return new MinMax(0, 0);
+    int min = A.get(0);
+    int max = min;
+    for(Integer integer : A) {
+      if (integer < min) {
+        min = integer;
+      } else if (integer > max) {
+        max = integer;
+      }
+    }
+    return new MinMax(min, max);
   }
 
   public static void main(String[] args) {

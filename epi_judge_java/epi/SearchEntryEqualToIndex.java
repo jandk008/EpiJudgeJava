@@ -8,7 +8,15 @@ public class SearchEntryEqualToIndex {
 
   public static int searchEntryEqualToItsIndex(List<Integer> A) {
     // TODO - you fill in here.
-    return 0;
+    int left = 0;
+    int right = A.size() - 1;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (A.get(mid) > mid) right = mid - 1;
+      else if (A.get(mid) < mid ) left = mid + 1;
+      else return mid;
+    }
+    return -1;
   }
   @EpiTest(testDataFile = "search_entry_equal_to_index.tsv")
   public static void searchEntryEqualToItsIndexWrapper(TimedExecutor executor,

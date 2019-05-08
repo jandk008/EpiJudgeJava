@@ -7,7 +7,13 @@ public class DeleteFromList {
   // Delete the node immediately following aNode. Assumes aNode is not a tail.
   public static void deleteList(ListNode<Integer> aNode) {
     // TODO - you fill in here.
-    return;
+    while (aNode != null && aNode.next != null) {
+      if (aNode.data.equals(aNode.next.data)) {
+        aNode.next = aNode.next.next;
+      } else {
+        aNode = aNode.next;
+      }
+    }
   }
 
   public static void main(String[] args) {

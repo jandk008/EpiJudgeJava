@@ -4,11 +4,25 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+
 public class TreeFromPreorderWithNull {
+  private static int index;
   public static BinaryTreeNode<Integer>
   reconstructPreorder(List<Integer> preorder) {
     // TODO - you fill in here.
-    return null;
+    index = 0;
+    return reconstructSubtree(preorder);
+  }
+
+  private static BinaryTreeNode<Integer> reconstructSubtree(List<Integer> preorder) {
+    final Integer integer = preorder.get(index++);
+    final PriorityQueue<Integer> integers = new PriorityQueue<>();
+    if (integer == null) return null;
+    BinaryTreeNode<Integer> root = new BinaryTreeNode<>(integer);
+    root.left = reconstructSubtree(preorder);
+    root.right = reconstructSubtree(preorder);
+    return root;
   }
   @EpiTest(testDataFile = "tree_from_preorder_with_null.tsv")
   public static BinaryTreeNode<Integer>

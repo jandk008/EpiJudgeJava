@@ -10,7 +10,16 @@ public class EvenOddArray {
 
   public static void evenOdd(List<Integer> A) {
     // TODO - you fill in here.
-    return;
+    int even = 0;
+    int odd = A.size() - 1;
+    while (even > odd) {
+      if (A.get(even) % 2 == 1) {
+        Collections.swap(A, even, odd);
+        odd--;
+      } else {
+        even++;
+      }
+    }
   }
   @EpiTest(testDataFile = "even_odd_array.tsv")
   public static void evenOddWrapper(TimedExecutor executor, List<Integer> A)

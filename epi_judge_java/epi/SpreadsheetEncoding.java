@@ -6,7 +6,11 @@ public class SpreadsheetEncoding {
 
   public static int ssDecodeColID(final String col) {
     // TODO - you fill in here.
-    return 0;
+    int res  = 0;
+    for (char c : col.toCharArray()) {
+      res = res * 26 + c - 'A' + 1;
+    }
+    return res;
   }
 
   public static void main(String[] args) {

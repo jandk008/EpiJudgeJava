@@ -9,7 +9,18 @@ public class LowestCommonAncestor {
                                             BinaryTreeNode<Integer> node0,
                                             BinaryTreeNode<Integer> node1) {
     // TODO - you fill in here.
-    return null;
+    return findLca(tree, node0, node1).ancestor;
+  }
+
+  private static Status findLca(BinaryTreeNode<Integer> root, BinaryTreeNode<Integer> p, BinaryTreeNode<Integer> q) {
+    if (root == null) return new Status(0, null);
+    Status leftStatus = findLca(root.left, p, q);
+    if (leftStatus.numberNodesFound == 2) return leftStatus;
+    Status rightStatus = findLca(root.right, p, q);
+    if (rightStatus.numberNodesFound == 2) return rightStatus;
+
+    final int numberNodesFound = leftStatus.numberNodesFound + rightStatus.numberNodesFound + (root == p ? 1 :0) + (root == q ? 1 : 0);
+    return new Status(numberNodesFound, numberNodesFound == 2 ? root : null);
   }
   @EpiTest(testDataFile = "lowest_common_ancestor.tsv")
   public static int lcaWrapper(TimedExecutor executor,
@@ -33,5 +44,14 @@ public class LowestCommonAncestor {
             .runFromAnnotations(args, "LowestCommonAncestor.java",
                                 new Object() {}.getClass().getEnclosingClass())
             .ordinal());
+  }
+
+  private static class Status {
+    int numberNodesFound;
+    BinaryTreeNode<Integer> ancestor;
+    Status(int numberNodesFound, BinaryTreeNode<Integer> ancestor) {
+      this.numberNodesFound = numberNodesFound;
+      this.ancestor = ancestor;
+    }
   }
 }
