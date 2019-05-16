@@ -1,10 +1,14 @@
 package epi;
+
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 public class DeadlockDetection {
 
   public static class GraphVertex {
@@ -15,8 +19,26 @@ public class DeadlockDetection {
 
   public static boolean isDeadlocked(List<GraphVertex> graph) {
     // TODO - you fill in here.
-    return true;
+    for (GraphVertex vertex : graph) {
+        if (dfs(vertex, new HashSet<>())){
+            return true;
+        }
+    }
+    return false;
   }
+
+  private static boolean dfs(GraphVertex curr, Set<GraphVertex> visited) {
+    if (visited.contains(curr)) return true;
+    visited.add(curr);
+    List<GraphVertex> edges = curr.edges;
+    for (GraphVertex g : edges) {
+      if (dfs(g, visited)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @EpiUserType(ctorParams = {int.class, int.class})
   public static class Edge {
     public int from;
