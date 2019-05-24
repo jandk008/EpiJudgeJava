@@ -15,7 +15,7 @@ public class FindSalaryThreshold {
     int sum = 0;
     for(int i = 0; i < currentSalaries.size(); i++) {
       int integer = currentSalaries.get(i);
-      if (threshold - integer < 0) {
+      if (threshold < integer) {
         threshold = (targetPayroll - sum) / (1.0 * (currentSalaries.size() - i));
         if (threshold < integer) return threshold;
       }
