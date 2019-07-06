@@ -4,7 +4,10 @@ import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+
 public class IsCircuitWirable {
 
   public static class GraphVertex {
@@ -14,8 +17,33 @@ public class IsCircuitWirable {
 
   public static boolean isAnyPlacementFeasible(List<GraphVertex> graph) {
     // TODO - you fill in here.
+    for (GraphVertex g : graph) {
+      if (g.d == -1) {
+        g.d = 0;
+        if (!dfs(g))
+          return false;
+      }
+    }
     return true;
   }
+
+  private static boolean dfs(GraphVertex g) {
+      Queue<GraphVertex> queue = new LinkedList<>();
+      queue.add(g);
+      while (!queue.isEmpty()) {
+        g = queue.poll();
+        for (GraphVertex curr : g.edges) {
+          if (curr.d == -1) {
+            curr.d = g.d == 0 ? 1 : 0;
+            queue.add(curr);
+          } else if (curr.d == g.d) {
+            return false;
+          }
+        }
+      }
+      return true;
+  }
+
   @EpiUserType(ctorParams = {int.class, int.class})
   public static class Edge {
     public int from;
