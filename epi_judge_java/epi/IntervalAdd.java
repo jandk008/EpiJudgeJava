@@ -39,9 +39,7 @@ public class IntervalAdd {
   }
 
   @EpiTest(testDataFile = "interval_add.tsv")
-
-  public static List<Interval> addInterval(List<Interval> disjointIntervals,
-                                           Interval newInterval) {
+  public static List<Interval> addInterval(List<Interval> disjointIntervals, Interval newInterval) {
     List<Interval> res = new ArrayList<>();
     for (Interval interval : disjointIntervals) {
       if (interval.right < newInterval.left) {
