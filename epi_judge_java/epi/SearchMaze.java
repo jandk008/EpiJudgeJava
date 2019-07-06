@@ -3,9 +3,16 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
 public class SearchMaze {
   @EpiUserType(ctorParams = {int.class, int.class})
 
@@ -37,11 +44,33 @@ public class SearchMaze {
 
   public enum Color { WHITE, BLACK }
 
-  public static List<Coordinate> searchMaze(List<List<Color>> maze,
-                                            Coordinate s, Coordinate e) {
+  public static List<Coordinate> searchMaze(List<List<Color>> maze, Coordinate s, Coordinate e) {
     // TODO - you fill in here.
-    return Collections.emptyList();
+    List<Coordinate> path = new ArrayList<>();
+    maze.get(s.x).set(s.y, Color.BLACK);
+    path.add(s);
+    return dfs(maze, s, e, path) ? path : Collections.emptyList();
   }
+
+  private static boolean dfs(List<List<Color>> maze, Coordinate c, Coordinate e, List<Coordinate> path) {
+    if(c.equals(e)) return true;
+    int[][] nextStep = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    for (int i = 0; i < nextStep.length; i++) {
+      Coordinate next = new Coordinate(c.x + nextStep[i][0], c.y + nextStep[i][1]);
+      if (canMoveable(maze, next)) {
+        maze.get(next.x).set(next.y, Color.BLACK);
+        path.add(next);
+        if (dfs(maze, next, e, path)) return true;
+        path.remove(path.size() - 1);
+      }
+    }
+    return false;
+  }
+
+  private static boolean canMoveable(List<List<Color>> maze, final Coordinate next) {
+    return next.x >= 0 && next.x < maze.size() && next.y >= 0 && next.y < maze.get(0).size() && maze.get(next.x).get(next.y).equals(Color.WHITE);
+  }
+
   public static boolean pathElementIsFeasible(List<List<Integer>> maze,
                                               Coordinate prev, Coordinate cur) {
     if (!(0 <= cur.x && cur.x < maze.size() && 0 <= cur.y &&
