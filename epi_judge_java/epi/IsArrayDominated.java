@@ -3,6 +3,7 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,7 @@ class Team {
   private static class Player implements Comparable<Player> {
     public Integer height;
 
-    public Player(Integer h) { height = h; }
+    Player(Integer h) { height = h; }
 
     @Override
     public int compareTo(Player that) {
@@ -18,14 +19,20 @@ class Team {
     }
   }
 
-  public Team(List<Integer> height) {
+  Team(List<Integer> height) {
     players =
-        height.stream().map(h -> new Player(h)).collect(Collectors.toList());
+        height.stream().map(Player::new).collect(Collectors.toList());
   }
 
   // Checks if team0 can be placed in front of team1.
-  public static boolean validPlacementExists(Team team0, Team team1) {
-    // TODO - you fill in here.
+  static boolean validPlacementExists(Team team0, Team team1) {
+    Collections.sort(team0.players);
+    Collections.sort(team1.players);
+
+    for (int i = 0; i < team0.players.size(); i++) {
+      if (team0.players.get(i).compareTo(team1.players.get(i)) >= 0) return false;
+    }
+
     return true;
   }
   private List<Player> players;

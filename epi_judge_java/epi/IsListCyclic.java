@@ -10,9 +10,7 @@ public class IsListCyclic {
     return null;
   }
   @EpiTest(testDataFile = "is_list_cyclic.tsv")
-  public static void HasCycleWrapper(TimedExecutor executor,
-                                     ListNode<Integer> head, int cycleIdx)
-      throws Exception {
+  public static void HasCycleWrapper(TimedExecutor executor, ListNode<Integer> head, int cycleIdx) throws Exception {
     int cycleLength = 0;
     if (cycleIdx != -1) {
       if (head == null) {

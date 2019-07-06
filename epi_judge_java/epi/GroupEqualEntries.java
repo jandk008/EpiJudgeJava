@@ -1,15 +1,27 @@
 package epi;
+import epi.IntervalAdd.Interval;
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 public class GroupEqualEntries {
+
+  private static List<Integer> indices;
+  private static Integer swapAge;
+
   @EpiUserType(ctorParams = {Integer.class, String.class})
 
   public static class Person {
@@ -42,9 +54,47 @@ public class GroupEqualEntries {
       return result;
     }
   }
-  public static void groupByAge(List<Person> people) {
-    // TODO - you fill in here.
-    return;
+  private static void groupByAge(List<Person> people) {
+    Map<Integer, Integer> ageCount = new HashMap<>();
+    for (Person person : people) {
+      if (ageCount.containsKey(person.age)) {
+        ageCount.put(person.age, ageCount.get(person.age) + 1);
+      } else {
+        ageCount.put(person.age, 1);
+      }
+    }
+
+    // offset starting position for each age to swap with
+    Map<Integer, Integer> ageOffset = new HashMap<>();
+    int offset = 0;
+    for (Entry<Integer, Integer> entry : ageCount.entrySet()) {
+      ageOffset.put(entry.getKey(), offset);
+      offset += entry.getValue();
+    }
+
+    while(!ageOffset.isEmpty()) {
+      // each time trying to deal with the first entry which indicates the first position not swapped
+      Entry<Integer, Integer> swapEntry = ageOffset.entrySet().iterator().next();
+      int swapIndex = swapEntry.getValue();
+
+      // check the age at the position of the original list and get the position we should swap with
+      swapAge = people.get(swapIndex).age;
+      int swapWithIndex = ageOffset.get(swapAge);
+
+      Collections.swap(people, swapIndex, swapWithIndex);
+
+      // update the count for the age swapped with
+      int swapWithCount = ageCount.get(swapAge);
+      swapWithCount--;
+      ageCount.put(swapAge, swapWithCount);
+
+      // remove the age from the remaining if the count reduced to 0
+      if (swapWithCount > 0) {
+        ageOffset.put(swapAge, swapWithIndex + 1);
+      } else {
+        ageOffset.remove(swapAge);
+      }
+    }
   }
   private static Map<Person, Integer> buildMultiset(List<Person> people) {
     Map<Person, Integer> m = new HashMap<>();

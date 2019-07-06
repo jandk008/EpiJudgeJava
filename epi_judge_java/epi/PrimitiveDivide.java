@@ -5,9 +5,10 @@ public class PrimitiveDivide {
   @EpiTest(testDataFile = "primitive_divide.tsv")
   public static int divide(int x, int y) {
     // TODO - you fill in here.
-    long shift = 32;
-    long res = 0;
-    long yp = y << shift;
+    long yp = y;
+    int shift = 32;
+    yp = (yp << shift);
+    int res = 0;
     while ( x >= y) {
       while (yp > x) {
         yp >>>= 1;
@@ -16,7 +17,7 @@ public class PrimitiveDivide {
       res  += 1L << shift;
       x -= yp;
     }
-    return (int) res;
+    return res;
   }
 
   public static void main(String[] args) {

@@ -4,16 +4,38 @@ import epi.test_framework.LexicographicalListComparator;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 public class EnumerateTrees {
 
-  public static List<BinaryTreeNode<Integer>>
-  generateAllBinaryTrees(int numNodes) {
+  public static List<BinaryTreeNode<Integer>> generateAllBinaryTrees(int numNodes) {
     // TODO - you fill in here.
-    return Collections.emptyList();
+    List<BinaryTreeNode<Integer>> list = new ArrayList<>();
+    if (numNodes == 0) {
+      list.add(null);
+    }
+    for (int leftNodesNum = 0;  leftNodesNum < numNodes; leftNodesNum++) {
+      List<BinaryTreeNode<Integer>> leftTree = generateAllBinaryTrees(leftNodesNum);
+      List<BinaryTreeNode<Integer>> rightTree = generateAllBinaryTrees(numNodes - 1 - leftNodesNum);
+      for (BinaryTreeNode<Integer> left : leftTree) {
+        for (BinaryTreeNode<Integer> right : rightTree) {
+          list.add(new BinaryTreeNode<>(0, left, right));
+        }
+      }
+    }
+    return list;
   }
+
+  private static BinaryTreeNode<Integer> generate(int left, int leftCount, int right, int rightCount) {
+    if (leftCount < left) {
+      return new BinaryTreeNode<>(0, generate(left, leftCount + 1, right, rightCount), generate(left, leftCount + 1, right, rightCount));
+    }
+    if (rightCount < right) {
+      return new BinaryTreeNode<>(0, generate(left, leftCount, right, rightCount + 1), generate(left, leftCount, right, rightCount + 1));
+    }
+    return null;
+  }
+
   public static List<Integer> serializeStructure(BinaryTreeNode<Integer> tree) {
     List<Integer> result = new ArrayList<>();
     Stack<BinaryTreeNode<Integer>> stack = new Stack<>();

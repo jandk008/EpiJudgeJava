@@ -1,18 +1,24 @@
 package epi;
+
 import epi.test_framework.BinaryTreeUtils;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
-import epi.test_framework.TestFailure;
 import epi.test_framework.TestUtils;
 import epi.test_framework.TimedExecutor;
 import java.util.List;
 public class BstFromSortedArray {
 
-  public static BstNode<Integer>
-  buildMinHeightBSTFromSortedArray(List<Integer> A) {
+  public static BstNode<Integer> buildMinHeightBSTFromSortedArray(List<Integer> A) {
     // TODO - you fill in here.
-    return null;
+    return constructSubtree(A, 0, A.size() - 1);
   }
+
+  private static BstNode<Integer> constructSubtree(List<Integer> A, int i, int j){
+    if (i > j) return null;
+    int mid = i + (j - i) / 2;
+    return new BstNode<>(A.get(mid), constructSubtree(A, i, mid - 1), constructSubtree(A, mid + 1, j));
+  }
+
   @EpiTest(testDataFile = "bst_from_sorted_array.tsv")
   public static int
   buildMinHeightBSTFromSortedArrayWrapper(TimedExecutor executor,
